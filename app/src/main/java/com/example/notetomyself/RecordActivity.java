@@ -53,12 +53,23 @@ public class RecordActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("_____________ONCREATE CALLED");
         state = states.NO_INIT;
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();           // for hiding action bar
         setContentView(R.layout.activity_record);
         setViewVariables();
         checkPermissions();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("_____________CALLED ON DESTROY");
+        if (state != states.SAVED) {
+            stopRecording();
+            deleteTempMemo();
+        }
     }
 
     void checkPermissions() {
@@ -121,6 +132,7 @@ public class RecordActivity extends AppCompatActivity {
         playButton.setImageDrawable(getDrawable(R.drawable.ic_play_circle_outline_black_24dp));
         if (state == states.STOPPED) return;
         recorder.stop();
+        recorder.reset();
         recorder.release();
         state = states.STOPPED;
     }

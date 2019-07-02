@@ -40,7 +40,10 @@ public class EditMemoDialog {
                 EditText editText = view.findViewById(R.id.editText_dialog_memo_name);
                 memo.setName(editText.getText().toString());
                 StorageManagement.getInstance().addMemo(memo);
-                activity.finish();
+                if (activity instanceof RecordActivity) {
+                    activity.finish();
+                }
+
                 dialog.dismiss();
             }
         });
