@@ -1,6 +1,7 @@
 package com.example.notetomyself;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -59,11 +60,21 @@ public class EditMemoDialog {
         initUI();
     }
 
+    Dialog getDialog() {
+        return dialog;
+    }
+
     private void initUI() {
         initRecycler();
         initAddCatButton();
         initFavButton();
         initDate();
+        initName();
+    }
+
+    private void initName() {
+        EditText etName = view.findViewById(R.id.editText_dialog_memo_name);
+        etName.setText(memo.getName());
     }
 
     private void initDate() {
@@ -121,7 +132,7 @@ public class EditMemoDialog {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 EditText tmp = addCatView.findViewById(R.id.editText_new_cat_name);
-                adapter.addCategory(tmp.getText().toString(), true);
+                adapter.addCategory(tmp.getText().toString());
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {

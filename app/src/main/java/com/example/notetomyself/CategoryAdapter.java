@@ -23,12 +23,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.memo = memo;
     }
 
-    void addCategory(String category, boolean isMemo) {
+    void addCategory(String category) {
+        if (!memo.addCategory(category)) return;
         categories.add(category);
         notifyItemInserted(categories.size() - 1);
-        if (isMemo) {
-            memo.addCategory(category);
-        }
     }
 
     Memo getMemo() {

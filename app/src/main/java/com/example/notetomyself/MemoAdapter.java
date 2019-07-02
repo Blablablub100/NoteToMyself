@@ -2,6 +2,7 @@ package com.example.notetomyself;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -120,6 +121,16 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     EditMemoDialog dialog = new EditMemoDialog(memo, MemoAdapter.this.activity);
+                    dialog.getDialog().setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            int pos = memos.indexOf(memo);
+                            notifyItemChanged(memos.indexOf(memo));
+                            Collections.sort(memos);
+                            int newPos = memos.indexOf(memo);
+                            notifyItemMoved(pos, newPos);
+                        }
+                    });
                 }
             });
         }

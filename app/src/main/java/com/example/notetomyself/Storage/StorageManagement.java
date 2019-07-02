@@ -44,11 +44,6 @@ public class StorageManagement {
         }
         List<String> res = new ArrayList<>(categories);
         Collections.sort(res);
-
-        //TODO REMOVE THIS LINE:
-        res.add("Sport");
-        res.add("Finanzen");
-        res.add("Reisen");
         return res;
     }
 

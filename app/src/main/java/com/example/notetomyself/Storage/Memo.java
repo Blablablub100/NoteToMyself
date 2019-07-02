@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Memo implements Comparable {
 
@@ -55,11 +56,15 @@ public class Memo implements Comparable {
         this.favorite = favorite;
     }
 
-    public void addCategory(String category) {
+    public boolean addCategory(String category) {
         if (categories == null) {
             categories = new ArrayList<>();
         }
+        for (String catElememnt: categories) {
+            if (catElememnt.equals(category)) return false;
+        }
         categories.add(category);
+        return true;
     }
 
     public void removeCategory(String category) {

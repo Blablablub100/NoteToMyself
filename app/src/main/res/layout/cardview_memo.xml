@@ -77,24 +77,13 @@
             app:srcCompat="@drawable/ic_mode_edit_black_24dp" />
 
         <ImageView
-            android:id="@+id/imageView_add_category"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:tint="@color/colorLiteAccentGray"
-            app:layout_constraintEnd_toStartOf="@+id/imageView_edit_memo"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_playlist_add_black_24dp" />
-
-        <ImageView
             android:id="@+id/imageView_toggle_favourite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:tint="@color/colorLiteAccentGray"
-            app:layout_constraintEnd_toStartOf="@+id/imageView_add_category"
+            app:layout_constraintEnd_toStartOf="@+id/imageView_edit_memo"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_star_black_24dp" />
     </android.support.constraint.ConstraintLayout>
