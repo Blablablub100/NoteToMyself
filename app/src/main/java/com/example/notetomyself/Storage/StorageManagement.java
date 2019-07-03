@@ -58,6 +58,18 @@ public class StorageManagement {
         return members;
     }
 
+    public List<Memo> getMembersOf(List<String> categories) {
+        List<Memo> members = new ArrayList<>();
+        for (Memo memo: memos) {
+            boolean isMember = true;
+            for (String category: categories) {
+                if (!memo.isMemberOf(category)) isMember = false;
+            }
+            if (isMember) members.add(memo);
+        }
+        return members;
+    }
+
     public void addMemo(String name
             , File file
             , Date time

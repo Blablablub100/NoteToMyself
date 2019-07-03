@@ -59,4 +59,14 @@
     <string name="category_name_hint">
         Category Name
     </string>
+
+    // for Action bar
+    <string name="action_filter">
+        filter
+    </string>
+
+    // for filtering dialog
+    <string name="filter_category_title">
+        Pick categories to filter
+    </string>
 </resources>

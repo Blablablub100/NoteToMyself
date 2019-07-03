@@ -29,7 +29,7 @@ public class MemoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         this.activity = activity;
     }
 
-    public void updateMemo(List<Memo> memos) {
+    void updateMemo(List<Memo> memos) {
         this.memos = memos;
     }
 
