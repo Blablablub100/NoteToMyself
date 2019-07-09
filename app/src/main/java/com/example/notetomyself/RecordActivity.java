@@ -7,6 +7,7 @@ import android.media.MediaRecorder;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.graphics.drawable.AnimationUtilsCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.text.Layout;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.coremedia.iso.boxes.Container;
@@ -31,10 +33,17 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.io.SequenceInputStream;
 import java.nio.channels.FileChannel;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class RecordActivity extends AppCompatActivity {
 
@@ -43,6 +52,9 @@ public class RecordActivity extends AppCompatActivity {
     private ImageView playButton;
     private ImageView deleteButton;
     private ImageView saveButton;
+    private TextView textViewTimer;
+    private int currTime = 0;
+    Timer timer;
 
     File currRecording;
     MediaRecorder recorder;
@@ -60,6 +72,7 @@ public class RecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record);
         setViewVariables();
         checkPermissions();
+        startTimer();
     }
 
     @Override
@@ -70,6 +83,8 @@ public class RecordActivity extends AppCompatActivity {
             stopRecording();
             deleteTempMemo();
         }
+        timer.cancel();
+        timer = null;
     }
 
     void checkPermissions() {
@@ -113,6 +128,7 @@ public class RecordActivity extends AppCompatActivity {
             currRecording = tmp;
             recorder.start();
             state = states.RECORDING;
+            currTime = 0;
         }
     }
 
@@ -130,7 +146,9 @@ public class RecordActivity extends AppCompatActivity {
 
     void stopRecording() {
         playButton.setImageDrawable(getDrawable(R.drawable.ic_play_circle_outline_black_24dp));
-        if (state == states.STOPPED) return;
+        if (state == states.STOPPED
+                || state == states.NO_INIT
+                || state == states.SAVED) return;
         recorder.stop();
         recorder.reset();
         recorder.release();
@@ -194,7 +212,7 @@ public class RecordActivity extends AppCompatActivity {
                 saveMemo();
             }
         });
-
+        textViewTimer = findViewById(R.id.textView_record_timer);
     }
 
 
@@ -208,6 +226,7 @@ public class RecordActivity extends AppCompatActivity {
         currRecording.delete();
         currRecording = null;
         state = states.NO_INIT;
+        textViewTimer.setText(getString(R.string.default_zero_time));
         Util.showSnackBar(this, getString(R.string.info_discarded_recordings));
     }
 
@@ -233,5 +252,29 @@ public class RecordActivity extends AppCompatActivity {
                 , Calendar.getInstance().getTime()
                 , false
                 , null), this);
+    }
+
+    private void startTimer() {
+        timer = new Timer();
+        final DateFormat df = new SimpleDateFormat("HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone("UTC"));
+        // stellt man hier nicht auf UTC ist die Zeit hier in Deutschland eine Stunde verschoben.
+
+        timer.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                if (state != states.RECORDING) return;
+                currTime = currTime + 1000;
+                final String tmp = df.format(new Date(currTime));
+                System.out.println(currTime);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        textViewTimer.setText(tmp);
+                    }
+                });
+            }
+        }, 0, 1000);
     }
 }

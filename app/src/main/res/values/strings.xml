@@ -69,4 +69,9 @@
     <string name="filter_category_title">
         Pick categories to filter
     </string>
+
+    // for recording activity
+    <string name="default_zero_time">
+        00:00:00
+    </string>
 </resources>
